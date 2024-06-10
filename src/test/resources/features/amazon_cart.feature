@@ -20,6 +20,7 @@ Feature: amazon cart
     |monitor|1      |
     |Laptop |2      |
 
+
   Scenario Outline:  Adding multiple Item in Cart and verifying sub total of product
     When  user Search the "<1products>" and press enter
     And   user select the item in the list as per "<Position>" and clicking on Add to Cart

@@ -9,7 +9,7 @@ import com.utility.Util;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+
 
 
 
@@ -21,7 +21,6 @@ public class BaseClass {
 
     public static WebDriver driver=null;
 
-    private static Properties properties;
 
     public final static int TIMEOUT = 40;
 

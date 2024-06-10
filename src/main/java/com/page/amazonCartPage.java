@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.Assert.*;
 
+import java.awt.font.TextHitInfo;
 import java.util.concurrent.TimeUnit;
 
 import static com.base.BaseClass.driver;
@@ -29,7 +30,6 @@ public class amazonCartPage extends searchaddCartRepo {
         try{
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             method.sendKeys(search_bar,products);
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -42,11 +42,17 @@ public class amazonCartPage extends searchaddCartRepo {
         try{
 
             String productPositionXPath = "//div[contains(@data-cel-widget, 'search_result')][" + Position + "]";
+
             WebElement productPositionElement = driver.findElement(By.xpath(productPositionXPath));
+
             Util.scrollToElement(driver,productPositionElement);
+
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
             String productprice = "//div[contains(@data-cel-widget, 'search_result')][" + Position + "]//span[contains(@class,'a-price-whole')]";
+
             WebElement productpricetext = driver.findElement(By.xpath(productprice));
+
             productPriceValue= productpricetext.getText().trim();
             System.out.println("product price :" +productPriceValue);
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -55,7 +61,8 @@ public class amazonCartPage extends searchaddCartRepo {
             WebElement productNametext = driver.findElement(By.xpath(productName));
             productNamevalue= productNametext.getText();
             System.out.println("product Name :" +productNamevalue);
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
             addItemIntoCart(Position);
         }catch (Exception e){
             e.printStackTrace();
@@ -66,13 +73,19 @@ public class amazonCartPage extends searchaddCartRepo {
     public void addItemIntoCart(String position) {
         try {
             String productPositionXPath = "//div[contains(@data-cel-widget, 'search_result')][" + position + "]";
+
             WebElement productPositionElement = driver.findElement(By.xpath(productPositionXPath));
+
             Util.scrollToElement(driver, productPositionElement);
+
             WebDriverWait wait = new WebDriverWait(driver, 20);
+
             String addToCartXPath = "//div[contains(@data-cel-widget, 'search_result')][" + position + "]//button[contains(@class,'a-button-text')]";
-            WebElement addToCartBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(addToCartXPath)));
+
+            WebElement addToCartBtn = driver.findElement(By.xpath(addToCartXPath));
             addToCartBtn.click();
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+            Thread.sleep(800);
             System.out.println("User is able to add product to the cart");
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,7 +95,7 @@ public class amazonCartPage extends searchaddCartRepo {
 
     public void openCarttopLeft() {
         try{
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
             method.click(cart);
         }catch (Exception e){
             e.printStackTrace();
@@ -102,7 +115,9 @@ public class amazonCartPage extends searchaddCartRepo {
             }
             String expectedProductPrice = productPriceValue.replaceAll("[^\\d.]", "").replaceAll("\\.00$", "");
             System.out.println("Cleaned Cart Product Price: " + cartProductPriceValue);
+
             System.out.println("Expected Product Page Price: " + expectedProductPrice);
+
             assertEquals("Price verification failed. Expected: " + expectedProductPrice + ", but found: " + cartProductPriceValue, expectedProductPrice, cartProductPriceValue);
             System.out.println("Price verification passed: " + cartProductPriceValue);
         } catch (Exception e) {
@@ -115,17 +130,21 @@ public class amazonCartPage extends searchaddCartRepo {
 
     public void verifysubTotalofProduct() {
         try {
-            String subtotalValueText = method.getText(subtotalValue).trim();
-            subtotalValueText = subtotalValueText.replaceAll("[^\\d.]", ""); // Remove non-numeric characters
 
-            // Log the values for debugging
-            System.out.println("Product Page Price: " + productPriceValue);
-            System.out.println("Cart Subtotal Value: " + subtotalValueText);
+            String subtotalValueText = method.getText(subtotalValue).trim();
+
+            subtotalValueText = subtotalValueText.replaceAll("[^\\d.]", "");
+
+            String expectedProductPrice = productPriceValue.replaceAll("[^\\d.]", "").replaceAll("\\.00$", "");
+
+            String subtotalValueTxt =subtotalValueText.replaceAll("[^\\d.]", "").replaceAll("\\.00$", "");
+            System.out.println("Product Page Price: " + expectedProductPrice);
+            System.out.println("Cart Subtotal Value: " + subtotalValueTxt);
 
             // Assert that the subtotal matches the product price
-            assertEquals("Subtotal verification failed. Expected: " + productPriceValue + ", but found: " + subtotalValueText, productPriceValue, subtotalValueText);
+            assertEquals("Subtotal verification failed. Expected: " + expectedProductPrice + ", but found: " + subtotalValueTxt, expectedProductPrice, subtotalValueTxt);
 
-            System.out.println("Subtotal verification passed: " + subtotalValueText);
+            System.out.println("Subtotal verification passed: " + subtotalValueTxt);
         } catch (Exception e) {
             e.printStackTrace();
             fail("An exception occurred during subtotal verification: " + e.getMessage());

@@ -22,7 +22,7 @@ public class Hooks extends BaseClass {
     @After
     public void afterScenario(Scenario scenario)
     {
-        //validate if scenario has failed
+
         if(scenario.isFailed()) {
             scenario.attach(Util.takeScreenShot(), "image/png", scenario.getName());
         }

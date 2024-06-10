@@ -1,7 +1,7 @@
 package com.utility;
 
 import com.base.BaseClass;
-import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 

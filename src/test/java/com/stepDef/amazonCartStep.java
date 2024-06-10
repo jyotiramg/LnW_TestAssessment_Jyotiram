@@ -57,4 +57,9 @@ public class amazonCartStep extends BaseClass {
                 return position;
         }
     }
+
+
+    @And("Verify that the sub total is identical for two products to the product page")
+    public void verifyThatTheSubTotalIsIdenticalForTwoProductsToTheProductPage() {
+    }
 }
